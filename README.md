@@ -1,5 +1,5 @@
 # Source code for the Ph.D. thesis
-Here you find the Matlab source code corresponding to the thesis "Gaussian Process Regression Techniques - With applications to wind turbines". The [thesis](http://hildobijl.com/Downloads/GPRT.pdf) itself can be downloaded from my [personal website](http://hildobijl.com/Research.php). It is written to introduce people to Gaussian process regression from an intuitive point of view.
+Here you find the Matlab source code corresponding to the thesis *Gaussian Process Regression Techniques - With applications to wind turbines*. The [thesis](http://hildobijl.com/Downloads/GPRT.pdf) itself can be downloaded from my [personal website](http://hildobijl.com/Research.php). It is written to introduce people to Gaussian process regression from an intuitive point of view.
 
 ## Contents
 
