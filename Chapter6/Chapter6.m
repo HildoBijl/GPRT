@@ -139,7 +139,7 @@ end
 % save('TrueMaximumDistribution','Xs','maxDist');
 % save('TrueMaximumValueDistribution','fm','maxValDist');
 
-%% Figure 6.3.
+%% Figures 6.3. and 6.4.
 disp('Creating Figure 6.3.');
 
 % We take derivatives of the posterior distribution.
@@ -179,6 +179,9 @@ if exportFigs ~= 0
 	export_fig('ZeroDerivativeProbability.png','-transparent');
 end
 
+% We move on to the next figure.
+disp('Creating Figure 6.4.');
+
 % We now set up the distribution of the second derivative, given our measurements and given that the first derivative at that exact point is zero.
 negativeSecondDerivProb = zeros(ns,1);
 for i = 1:ns % We walk through each individual point, noting that the derivative there is zero and calculating the posterior distribution of the second derivative.
@@ -205,8 +208,8 @@ if exportFigs ~= 0
 	export_fig('LocalMaximumProbability.png','-transparent');
 end
 
-%% Figure 6.4.
-disp('Creating Figure 6.4.');
+%% Figure 6.5.
+disp('Creating Figure 6.5.');
 
 % We set up bins.
 nr = 20; % We define the number of rounds we apply.
@@ -255,8 +258,8 @@ limitDist = mat\outcome; % These are the probabilities that each point is larger
 limitDist = limitDist/dx; % We turn the result into a PDF.
 
 % We plot the results.
-figure(5);
-clf(5);
+figure(6);
+clf(6);
 hold on;
 grid on;
 xlabel('Input');
@@ -316,8 +319,80 @@ limitDist = mat\outcome; % These are the probabilities that each point is larger
 disp('The limit distribution is given by');
 disp(limitDist);
 
-%% Figure 6.5.
-disp('Creating Figure 6.5.');
+%% Figure 6.6.
+disp('Creating Figure 6.6.');
+
+% We set up bins.
+nr = 5; % We define the number of rounds we apply.
+np = 1e4; % We define the number of particles used.
+nc = 30; % We define the number of challengers used.
+bins = zeros(ns,nr+1); % We set up storage space for the number of bins.
+bins(:,1) = floor(np/ns); % We divide the particles over the bins.
+bins(1:mod(np,ns),1) = ceil(np/ns); % We give the first few bins an extra particle if it doesn't quite match.
+rng(1, 'twister'); % We fix Matlab's random number generator, so that it gives the plot shown in the thesis.
+
+% We iterate over the number of rounds.
+for i = 1:nr
+	% We walk through all the bins.
+	for j = 1:ns
+		% For each particle, we make a comparison.
+		for k = 1:bins(j,i)
+			challengers = ceil(rand(nc,1)*ns); % We pick random bins for each of the challengers.
+			challengeBins = [j;challengers]; % We merge the challenger bins together with the bin of the champion.
+			mu = mPost(challengeBins); % This is the mean vector of the joint distribution.
+			S = SPost(challengeBins,challengeBins); % This is the covariance matrix of the joint distribution.
+			sample = mu + chol(S + eye(nc+1)*1e-12)'*randn(nc+1,1); % This is the sample from the joint distribution. We now just need to find the maximum.
+			[maxVal,maxInd] = max(sample); % We find the maximum of the sample to figure out which particle we should keep.
+			selectedBin = challengeBins(maxInd); % We look up the corresponding bin.
+			bins(selectedBin,i+1) = bins(selectedBin,i+1) + 1; % We add a particle to the corresponding bin.
+		end
+	end
+end
+
+% Next, we calculate the limit distribution of the particles. Note that this is the limit distribution if we had used a single challenger. Finding the limit distribution for any number of
+% challenger particles cannot be done analytically.
+P = zeros(ns,ns);
+for i = 1:ns
+	for j = 1:ns
+		mut = mPost(i) - mPost(j);
+		Sigmat = SPost(i,i) + SPost(j,j) - SPost(i,j) - SPost(j,i);
+		P(i,j) = erf(mut/sqrt(2*Sigmat))/2 + 1/2;
+	end
+	P(i,i) = 1/2;
+end
+
+% We calculate the comparison matrix and use it to find the limit distribution of the particles.
+mat = diag(diag(ones(ns,ns)*P)) - P;
+outcome = zeros(ns,1);
+mat(end,:) = ones(1,ns); % We set the bottom row equal to ones.
+outcome(end) = 1; % We set the bottom element of the outcome equal to one.
+limitDist = mat\outcome; % These are the probabilities that each point is larger than any of the other points, according to the particle method.
+limitDist = limitDist/dx; % We turn the result into a PDF.
+
+% We plot the results.
+figure(7);
+clf(7);
+hold on;
+grid on;
+xlabel('Input');
+ylabel('Particle distribution');
+for i = 1:nr+1
+	distribution = bins(:,i)/np/dx;
+	particleDistribution = plot(Xs, distribution, '-', 'Color', 0.8*(1 - i/(nr+1))*[1,1,1]);
+end
+axis([xMin,xMax,0,2.5]);
+
+% We also add the true maximum distribution and the limit distribution to the plot.
+limitDistribution = plot(Xs, limitDist, '-', 'Color', red, 'LineWidth', 1);
+load('TrueMaximumDistribution');
+trueDistribution = plot(Xs, maxDist, '-', 'Color', blue);
+legend([trueDistribution, limitDistribution, particleDistribution], 'True distribution', 'Limit distribution', 'Particle distribution', 'Location', 'NorthWest');
+if exportFigs ~= 0
+	export_fig('ParticleDistributionMultipleChallengers.png','-transparent');
+end
+
+%% Figure 6.7.
+disp('Creating Figure 6.7.');
 
 % We make some definitions.
 np1 = 20; % This is the number of particles we use.
@@ -335,8 +410,8 @@ rng(1, 'twister'); % We fix Matlab's random number generator, so we get the same
 
 % We set up the PDF of the initial distribution and plot it.
 initialDist = ((xs <= x0Max).*(xs > x0Min))/(x0Max - x0Min);
-figure(6);
-clf(6);
+figure(8);
+clf(8);
 hold on;
 grid on;
 xlabel('x_k');
@@ -369,8 +444,8 @@ for i = 1:np2
 	xcMax = xp2New(i) + dxPlot/2;
  	postDist2 = postDist2 + (1/np2)*((xs <= xcMax).*(xs > xcMin))/dxPlot;
 end
-figure(7);
-clf(7);
+figure(9);
+clf(9);
 hold on;
 grid on;
 xlabel('x_{k+1}');
@@ -396,8 +471,8 @@ for i = 1:np2
 	xcMax = xp2New(i) + blockWidth/2;
  	postDist2 = postDist2 + (1/np2)*((xs <= xcMax).*(xs > xcMin))/blockWidth;
 end
-figure(8);
-clf(8);
+figure(10);
+clf(10);
 hold on;
 grid on;
 xlabel('x_{k+1}');
@@ -420,8 +495,8 @@ end
 for i = 1:np2
  	postDist2 = postDist2 + (1/np2)*1/sqrt(2*pi*GaussianWidth^2)*exp(-1/2*(xp2New(i) - xs).^2/GaussianWidth^2);
 end
-figure(9);
-clf(9);
+figure(11);
+clf(11);
 hold on;
 grid on;
 xlabel('x_{k+1}');
@@ -434,8 +509,8 @@ if exportFigs ~= 0
 	export_fig('NextStateDistributionThroughGaussian.png','-transparent');
 end
 
-%% Figure 6.6.
-disp('Creating Figure 6.6.');
+%% Figure 6.8.
+disp('Creating Figure 6.8.');
 
 % We define the particles.
 x = 1:5; % These are the particle values.
@@ -451,8 +526,8 @@ for i = 1:np
 end
 
 % We make the cumulative weight plot.
-figure(10);
-clf(10);
+figure(12);
+clf(12);
 hold on;
 grid on;
 xlabel('Weight number');
@@ -465,8 +540,8 @@ end
 % We now set up data for the multinomial resampling idea and make that plot.
 rng(7, 'twister'); % We fix Matlab's random number generator, so we get the same measurement points as in the thesis plots.
 newParticleIndices = rand(np,1)*np;
-figure(11);
-clf(11);
+figure(13);
+clf(13);
 hold on;
 grid on;
 xlabel('Weight number');
@@ -481,8 +556,8 @@ end
 
 % Next, we set up data for the stratified resampling idea and make that plot.
 rng(6, 'twister'); % We fix Matlab's random number generator, so we get the same measurement points as in the thesis plots.
-figure(12);
-clf(12);
+figure(14);
+clf(14);
 hold on;
 grid on;
 xlabel('Weight number');
@@ -507,8 +582,8 @@ end
 % Finally, we set up systematic resampling.
 rng(3, 'twister'); % We fix Matlab's random number generator, so we get the same measurement points as in the thesis plots.
 newParticleIndices = (1:np) - rand(1,1);
-figure(13);
-clf(13);
+figure(15);
+clf(15);
 hold on;
 grid on;
 xlabel('Weight number');
@@ -521,8 +596,8 @@ if exportFigs ~= 0
 	export_fig('SystematicResampling.png','-transparent');
 end
 
-%% Figure 6.7.
-disp('Creating Figure 6.7.');
+%% Figure 6.9.
+disp('Creating Figure 6.9.');
 
 % We set up a GP with only a very limited number of measurements, so we have lots of uncertainty.
 nmUsed = 8;
@@ -531,8 +606,8 @@ SPostUnc = Kss - Ksm(:,1:nmUsed)/(Kmm(1:nmUsed,1:nmUsed) + Sfm(1:nmUsed,1:nmUsed
 sPostUnc = sqrt(diag(SPostUnc)); % These are the posterior standard deviations.
 
 % We plot the GP which we had previously.
-figure(14);
-clf(14);
+figure(16);
+clf(16);
 hold on;
 grid on;
 xlabel('Input');
@@ -576,8 +651,8 @@ UCB2 = mPostUnc + 2*sPostUnc;
 [UCB2max,UCB2ind] = max(UCB2);
 
 % We plot the various acquisition functions.
-figure(15);
-clf(15);
+figure(17);
+clf(17);
 hold on;
 grid on;
 xlabel('Input');
@@ -594,8 +669,8 @@ if exportFigs ~= 0
 end
 
 % We plot the various acquisition functions.
-figure(16);
-clf(16);
+figure(18);
+clf(18);
 hold on;
 grid on;
 xlabel('Input');
@@ -613,8 +688,8 @@ if exportFigs ~= 0
 	export_fig('PIandEIAF.png','-transparent');
 end
 
-%% Figures 6.8. and 6.9.
-disp('Creating Figure 6.8.');
+%% Figures 6.10. and 6.11.
+disp('Creating Figure 6.10.');
 
 % We define parameters.
 nr = 10; % We define the number of rounds we apply.
@@ -734,8 +809,8 @@ limitDist = mat\outcome; % These are the probabilities that each point is larger
 limitDist = limitDist/dx; % We turn the result into a PDF.
 
 % We plot the results.
-figure(17);
-clf(17);
+figure(19);
+clf(19);
 hold on;
 grid on;
 xlabel('Input');
@@ -755,8 +830,8 @@ if exportFigs ~= 0
 	export_fig('ImprovedParticleDistribution.png','-transparent');
 end
 
-% We set up Figure 6.9. based on the results of the particle method we just ran.
-disp('Creating Figure 6.9.');
+% We set up Figure 6.11. based on the results of the particle method we just ran.
+disp('Creating Figure 6.11.');
 
 % We set up the probability distribution for the maximum value, based on the particles.
 pfMax = zeros(1,ns);
@@ -766,8 +841,8 @@ end
 pfMax = pfMax/sum(weights);
 
 % We set up the plot for the maximum value distribution.
-figure(18);
-clf(18);
+figure(20);
+clf(20);
 hold on;
 grid on;
 xlabel('Output');
