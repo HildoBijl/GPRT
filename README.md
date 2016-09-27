@@ -1,5 +1,5 @@
 # Source code for the Ph.D. thesis
-Here you find the Matlab source code corresponding to the thesis "Gaussian Process Regression Techniques - With applications to wind turbines". The [thesis](http://hildobijl.com/Downloads/GPRT.pdf) itself can be downloaded from my [personal website](http://hildobijl.com/Research.php). It is written to introduce people to Gaussian process regression from an intuitive point of view.
+Here you find the Matlab source code corresponding to the thesis *Gaussian Process Regression Techniques - With applications to wind turbines*. The [thesis](http://hildobijl.com/Downloads/GPRT.pdf) itself can be downloaded from my [personal website](http://hildobijl.com/Research.php). It is written to introduce people to Gaussian process regression from an intuitive point of view.
 
 ## Contents
 
@@ -11,7 +11,7 @@ In general, just open a file, make sure that the folder it is in is set as Matla
 
 ## External toolboxes
 
-I have used a few other toolboxes in the code. To make the code easily accessible, I have incorporated these toolboxes. (I know, not the best method, but it does prevent the code from breaking, as these toolboxes get updates.) If you work more with the code, you might want to download these toolboxes yourself though. They are the following.
+I have used a few other toolboxes in the code. To make the code easily accessible, I have incorporated these toolboxes. (I know, it's not the best method, but it does prevent the code from potentially breaking when these toolboxes get updates.) If you work more with the code, you might want to download these toolboxes yourself though. I have used the following ones.
 
 * For exporting figures to files, the [export_fig](https://nl.mathworks.com/matlabcentral/fileexchange/23629-export-fig) package.
 * For chapter 5: the NIGP toolbox. See the personal page of [Andrew McHutchon](http://mlg.eng.cam.ac.uk/?portfolio=andrew-mchutchon).
@@ -21,6 +21,6 @@ All other support code (the Tools and the PitchPlunge system) have been coded by
 
 ## Feedback
 
-I am always curious where the stuff that I make winds up, so if you find this useful, send me a message. (You can find [contact information](http://hildobijl.com/Contact.php) on my [personal web page](http://hildobijl.com/).)
+I am always curious where the stuff that I make winds up, so if you find this source code useful, send me a message. (You can find [contact information](http://hildobijl.com/Contact.php) on my [personal web page](http://hildobijl.com/).)
 
-Oh, and if you find an error anywhere, then this should of course also be fixed so others aren't bothered by it. I will help fix those in any way I can.
+Oh, and if you find an error anywhere, then this should of course also be fixed so others aren't bothered by it. I will help fix errors in any way I can.
