@@ -491,14 +491,14 @@ set(sUp,'LineStyle','none');
 sMid = surface(x1Mesh, x2Mesh, mPost);
 set(sMid,'FaceAlpha',0.8);
 if useColor == 0
-	set(sDown,'FaceColor',[0.5,0.5,0.5]);
-	set(sUp,'FaceColor',[0.5,0.5,0.5]);
-	set(sMid,'FaceColor',[0.5,0.5,0.5]);
+	set(sDown,'FaceColor',[0.2,0.2,0.2]);
+	set(sUp,'FaceColor',[0.2,0.2,0.2]);
+	set(sMid,'FaceColor',[0.2,0.2,0.2]);
 	scatter3(Xm(1,:), Xm(2,:), fmh, 'ko', 'filled');
 else
-	set(sDown,'FaceColor',[0,0,1]);
-	set(sUp,'FaceColor',[0,0,1]);
-	set(sMid,'FaceColor',[0,0,1]);
+	set(sDown,'FaceColor',[0,0,0.8]);
+	set(sUp,'FaceColor',[0,0,0.8]);
+	set(sMid,'FaceColor',[0,0,0.8]);
 	scatter3(Xm(1,:), Xm(2,:), fmh, 'ro', 'filled');
 end
 xlabel('Input 1');

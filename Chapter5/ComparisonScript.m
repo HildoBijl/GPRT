@@ -11,7 +11,7 @@
 % We set up the workspace, ready for executing scripts.
 clear all; % Empty the workspace.
 clc; % Empty the command window.
-exportFigs = 0; % Do we export figures? 0 for no, 1 (or anything else) for yes.
+exportFigs = 1; % Do we export figures? 0 for no, 1 (or anything else) for yes.
 useColor = 1; % Should we set up plots for colored output (1) or black-and-white output (0)?
 
 % We add paths to folder which contain functions we will use.
@@ -39,7 +39,7 @@ else
 	grey = [0.8 0.8 1];
 end
 
-% We fix Matlab's random number generator, so that it should (in theory) give the same results every run.
+%% We fix Matlab's random number generator, so that it should (in theory) give the same results every run.
 rng(1, 'twister');
 
 % We define the range of the plot we will make.
@@ -323,9 +323,28 @@ resSorted = sort(res, 3, 'ascend'); % We sort all the results, so that it become
 result = mean(resSorted(:,1:2,1:partUsed*numIterations),3);
 disp([result*1e3,result(:,1)./result(:,2)]); % We show the results. We multiply the errors by a thousand to make the numbers more visible in Matlab.
 
-save('ComparisonScript400Experiments');
+% save('ComparisonScript400Experiments');
 
-%% With this script, we can plot the result of a certain sample from the script above.
+%% With this script, we can plot the result of a certain sample from the script above. We can also load in earlier data.
+
+% load('ComparisonScript400Experiments');
+
+% We define colors.
+black = [0 0 0];
+white = [1 1 1];
+if useColor == 0
+	red = [0 0 0];
+	green = [0.6 0.6 0.6];
+	blue = [0.2 0.2 0.2];
+	yellow = [0.4 0.4 0.4];
+	grey = [0.8 0.8 0.8];
+else
+	red = [0.8 0 0];
+	green = [0 0.4 0];
+	blue = [0 0 0.8];
+	yellow = [0.6 0.6 0];
+	grey = [0.8 0.8 1];
+end
 
 % Which sample (or counter number) should we plot?
 sample = 1;
@@ -352,6 +371,7 @@ ylabel('Output');
 pointsUsed = [nmu,nmu,nm,nmu,nmu,nm,nm];
 plotMin = floor(min(fmh)*2)/2;
 plotMax = ceil(max(fmh)*2)/2;
+caseTranslation = [1,2,7,3,4,5,6]; % This is the translation vector from the case numbers in this script to the case numbers in the thesis.
 for i = 1:numMethods
 	muu = muuS(:,i,sample);
 	stdu = sqrt(diag(SuuS(:,:,i,sample)));
@@ -379,5 +399,6 @@ for i = 1:numMethods
 	axis([xMin,xMax,plotMin,plotMax]);
 	if exportFigs ~= 0
 		export_fig(['ComparisonSampleForScriptCase',num2str(i),'.png'],'-transparent');
+		export_fig(['ComparisonSampleCase',num2str(caseTranslation(i)),'.png'],'-transparent');
 	end
 end

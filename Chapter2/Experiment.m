@@ -12,6 +12,23 @@ addpath('../PitchPlunge/Controllers/');
 addpath('../ExportFig/');
 addpath('../Tools/');
 
+% We define colors.
+black = [0 0 0];
+white = [1 1 1];
+if useColor == 0
+	red = [0 0 0];
+	green = [0.6 0.6 0.6];
+	blue = [0.2 0.2 0.2];
+	yellow = [0.4 0.4 0.4];
+	grey = [0.8 0.8 0.8];
+else
+	red = [0.8 0 0];
+	green = [0 0.4 0];
+	blue = [0 0 0.8];
+	yellow = [0.6 0.6 0];
+	grey = [0.8 0.8 1];
+end
+
 % Before we start, we first run a general simulation of the system.
 T = 4; % We define the simulation length.
 dt = 0.01; % We define the simulation time step.
@@ -24,6 +41,7 @@ defineInitialConditions; % We define the initial conditions.
 defineControllerParameters; % We set up the controller parameters.
 
 % We adjust the initial conditions somewhat, making sure flutter takes place.
+U0 = 15; % We adjust the wind speed from its default value.
 h0 = 0; % Initial plunge. [m]
 a0 = 0.1; % Initial pitch angle. [rad]
 
@@ -78,6 +96,7 @@ defineInitialConditions; % We define the initial conditions.
 defineControllerParameters; % We set up the controller parameters.
 
 % We define the range for the initial state.
+U0 = 15; % We adjust the wind speed from its default value.
 h0Range = 5e-3;
 a0Range = 6e-2;
 hd0Range = 5e-2;
@@ -167,20 +186,17 @@ for outputIndex = 1:2
 	sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 	set(sDown,'FaceAlpha',0.3);
 	set(sDown,'LineStyle','none');
+	set(sDown,'FaceColor',blue);
 	sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 	set(sUp,'FaceAlpha',0.3);
 	set(sUp,'LineStyle','none');
+	set(sUp,'FaceColor',blue);
 	sMid = surface(x1Mesh, x2Mesh, mPost);
 	set(sMid,'FaceAlpha',0.8);
+	set(sMid,'FaceColor',blue);
 	if useColor == 0
-		set(sDown,'FaceColor',[0.5,0.5,0.5]);
-		set(sUp,'FaceColor',[0.5,0.5,0.5]);
-		set(sMid,'FaceColor',[0.5,0.5,0.5]);
 		scatter3(Xm(1,:), Xm(2,:), fmh(:,outputIndex), 'ko', 'filled');
 	else
-		set(sDown,'FaceColor',[0,0,1]);
-		set(sUp,'FaceColor',[0,0,1]);
-		set(sMid,'FaceColor',[0,0,1]);
 		scatter3(Xm(1,:), Xm(2,:), fmh(:,outputIndex), 'ro', 'filled');
 	end
 	xlabel('h_k');
@@ -203,12 +219,8 @@ for outputIndex = 1:2
 
 	% We also plot the analytic result.
 	sLinear = surface(x1Mesh, x2Mesh, reshape(newStateLinear(outputIndex,:), nsPerDimension, nsPerDimension));
-	if useColor == 0
-		set(sLinear,'FaceColor',[0.7,0.7,0.7]);
-	else
-		set(sLinear,'FaceColor',[0,1,0]);
-	end
 	set(sLinear,'FaceAlpha',0.5);
+	set(sLinear,'FaceColor',green);
 	
 	% And we plot the posterior mean, because we want to save it.
 	mPostStorage(:,:,outputIndex) = mPost;
@@ -268,20 +280,14 @@ for outputIndex = 1:2
 	sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 	set(sDown,'FaceAlpha',0.3);
 	set(sDown,'LineStyle','none');
+	set(sDown,'FaceColor',blue);
 	sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 	set(sUp,'FaceAlpha',0.3);
 	set(sUp,'LineStyle','none');
+	set(sUp,'FaceColor',blue);
 	sMid = surface(x1Mesh, x2Mesh, mPost);
 	set(sMid,'FaceAlpha',0.8);
-	if useColor == 0
-		set(sDown,'FaceColor',[0.5,0.5,0.5]);
-		set(sUp,'FaceColor',[0.5,0.5,0.5]);
-		set(sMid,'FaceColor',[0.5,0.5,0.5]);
-	else
-		set(sDown,'FaceColor',[0,0,1]);
-		set(sUp,'FaceColor',[0,0,1]);
-		set(sMid,'FaceColor',[0,0,1]);
-	end
+	set(sMid,'FaceColor',blue);
 	xlabel('h_k');
 	ylabel('\alpha_k');
 	if outputIndex == 1
@@ -301,12 +307,8 @@ for outputIndex = 1:2
 	% We also plot the result from the previous chapter.
 	load('../Chapter2/CH2Predictions');
 	sPrevious = surface(x1Mesh, x2Mesh, mPostStorage(:,:,outputIndex));
-	set(sPrevious,'FaceAlpha',0.4);
-	if useColor == 0
-		set(sPrevious,'FaceColor',[0.7,0.7,0.7]);
-	else
-		set(sPrevious,'FaceColor',[0.3,0.1,0]);
-	end
+	set(sPrevious,'FaceAlpha',0.5);
+	set(sPrevious,'FaceColor',green);
 	if exportFigs ~= 0
 		export_fig(['NextStatePredictionFiveDimensional',num2str(outputIndex),'.png'],'-transparent');
 	end

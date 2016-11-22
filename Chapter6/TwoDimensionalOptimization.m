@@ -19,6 +19,7 @@ if useColor == 0
 	yellow = [0.4 0.4 0.4];
 	grey = [0.8 0.8 0.8];
 	brown = [0.95 0.95 0.95];
+	colormap(repmat((0:0.01:1)',1,3));
 else
 	red = [0.8 0 0];
 	green = [0 0.4 0];
@@ -26,6 +27,7 @@ else
 	yellow = [0.6 0.6 0];
 	grey = [0.8 0.8 1];
 	brown = [0.45 0.15 0.0];
+	colormap('default');
 end
 
 % We define settings for the script.
@@ -474,7 +476,6 @@ for run = 1:nRuns
 			end
 			if exportFigs ~= 0
 				if iAF == 1
-					export_fig(['MCMDMaximumDistribution2DRun',num2str(run),'.png'],'-transparent');
 				elseif iAF == 2
 					export_fig(['UCBAcquisitionFunction2D',num2str(run),'.png'],'-transparent');
 				elseif iAF == 3

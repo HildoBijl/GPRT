@@ -137,12 +137,13 @@ save('Experiment1Data','cost','alpha');
 % We set up the workspace, ready for executing scripts.
 clear all; % Empty the workspace.
 clc; % Empty the command window.
-exportFigs = 1; % Do we export figures? 0 for no, 1 (or anything else) for yes.
+exportFigs = 0; % Do we export figures? 0 for no, 1 (or anything else) for yes.
 useColor = 1; % Should we set up plots for colored output (1) or black-and-white output (0)?
 addpath('../ExportFig'); % We add the functions for exporting figures.
 
 % We load the experiment data and calculate some parameters.
 load('Experiment1Data');
+% load('Experiment1Data1MMeasurements');
 numAlpha = length(alpha);
 numExperiments = size(cost,1);
 costMean = mean(cost);

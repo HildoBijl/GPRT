@@ -5,7 +5,7 @@
 % We set up the workspace, ready for executing scripts.
 clear all; % Empty the workspace.
 clc; % Empty the command window.
-exportFigs = 1; % Do we export figures? 0 for no, 1 (or anything else) for yes.
+exportFigs = 0; % Do we export figures? 0 for no, 1 (or anything else) for yes.
 useColor = 1; % Should we set up plots for colored output (1) or black-and-white output (0)?
 addpath('../ExportFig'); % We add the functions for exporting figures.
 

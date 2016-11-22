@@ -5,7 +5,7 @@
 % We set up the workspace, ready for executing scripts.
 clear all; % Empty the workspace.
 clc; % Empty the command window.
-exportFigs = 1; % Do we export figures? 0 for no, 1 (or anything else) for yes.
+exportFigs = 0; % Do we export figures? 0 for no, 1 (or anything else) for yes.
 useColor = 1; % Should we set up plots for colored output (1) or black-and-white output (0)?
 
 % We add paths containing files which we will need.
@@ -13,6 +13,23 @@ addpath('../PitchPlunge/Definitions/');
 addpath('../PitchPlunge/Controllers/');
 addpath('../ExportFig/');
 addpath('../Tools/');
+
+% We define colors.
+black = [0 0 0];
+white = [1 1 1];
+if useColor == 0
+	red = [0 0 0];
+	green = [0.6 0.6 0.6];
+	blue = [0.2 0.2 0.2];
+	yellow = [0.4 0.4 0.4];
+	grey = [0.8 0.8 0.8];
+else
+	red = [0.8 0 0];
+	green = [0 0.4 0];
+	blue = [0 0 0.8];
+	yellow = [0.6 0.6 0];
+	grey = [0.8 0.8 1];
+end
 
 % Next, it's time to gather data for GP regression. We set the number of measurements that we want to do.
 nm = 50; % We set the number of time steps we want to feed to the GP. (Note that later on we do full simulations, so I would not recommend setting nm larger than 1000 unless you're really patient.)
@@ -174,24 +191,17 @@ grid on;
 sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 set(sDown,'FaceAlpha',0.3);
 set(sDown,'LineStyle','none');
+set(sDown,'FaceColor',blue);
 sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 set(sUp,'FaceAlpha',0.3);
 set(sUp,'LineStyle','none');
+set(sUp,'FaceColor',blue);
 sMid = surface(x1Mesh, x2Mesh, mPost);
 set(sMid,'FaceAlpha',0.8);
+set(sMid,'FaceColor',blue);
 % sTrue = surface(x1Mesh, x2Mesh, trueValue);
 % set(sTrue,'FaceAlpha',0.8);
-if useColor == 0
-	set(sDown,'FaceColor',[0.5,0.5,0.5]);
-	set(sUp,'FaceColor',[0.5,0.5,0.5]);
-	set(sMid,'FaceColor',[0.5,0.5,0.5]);
-% 	set(sTrue,'FaceColor',[0.8,0.8,0.8]);
-else
-	set(sDown,'FaceColor',[0,0,1]);
-	set(sUp,'FaceColor',[0,0,1]);
-	set(sMid,'FaceColor',[0,0,1]);
-% 	set(sTrue,'FaceColor',[0,1,0]);
-end
+% set(sTrue,'FaceColor',green);
 xlabel('h_0');
 ylabel('\alpha_0');
 zlabel('V(x_0)');
@@ -306,24 +316,17 @@ grid on;
 sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 set(sDown,'FaceAlpha',0.3);
 set(sDown,'LineStyle','none');
+set(sDown,'FaceColor',blue);
 sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 set(sUp,'FaceAlpha',0.3);
 set(sUp,'LineStyle','none');
+set(sUp,'FaceColor',blue);
 sMid = surface(x1Mesh, x2Mesh, mPost);
 set(sMid,'FaceAlpha',0.8);
+set(sMid,'FaceColor',blue);
 sTrue = surface(x1Mesh, x2Mesh, trueValueWithNoise);
 set(sTrue,'FaceAlpha',0.8);
-if useColor == 0
-	set(sDown,'FaceColor',[0.5,0.5,0.5]);
-	set(sUp,'FaceColor',[0.5,0.5,0.5]);
-	set(sMid,'FaceColor',[0.5,0.5,0.5]);
-	set(sTrue,'FaceColor',[0.8,0.8,0.8]);
-else
-	set(sDown,'FaceColor',[0,0,1]);
-	set(sUp,'FaceColor',[0,0,1]);
-	set(sMid,'FaceColor',[0,0,1]);
-	set(sTrue,'FaceColor',[0,1,0]);
-end
+set(sTrue,'FaceColor',green);
 xlabel('h_0');
 ylabel('\alpha_0');
 zlabel('V(x_0)');
@@ -414,24 +417,17 @@ grid on;
 sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 set(sDown,'FaceAlpha',0.3);
 set(sDown,'LineStyle','none');
+set(sDown,'FaceColor',blue);
 sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 set(sUp,'FaceAlpha',0.3);
 set(sUp,'LineStyle','none');
+set(sUp,'FaceColor',blue);
 sMid = surface(x1Mesh, x2Mesh, mPost);
 set(sMid,'FaceAlpha',0.8);
+set(sMid,'FaceColor',blue);
 sTrue = surface(x1Mesh, x2Mesh, trueValueWithNoise);
 set(sTrue,'FaceAlpha',0.8);
-if useColor == 0
-	set(sDown,'FaceColor',[0.5,0.5,0.5]);
-	set(sUp,'FaceColor',[0.5,0.5,0.5]);
-	set(sMid,'FaceColor',[0.5,0.5,0.5]);
-	set(sTrue,'FaceColor',[0.8,0.8,0.8]);
-else
-	set(sDown,'FaceColor',[0,0,1]);
-	set(sUp,'FaceColor',[0,0,1]);
-	set(sMid,'FaceColor',[0,0,1]);
-	set(sTrue,'FaceColor',[0,1,0]);
-end
+set(sTrue,'FaceColor',green);
 xlabel('h_0');
 ylabel('\alpha_0');
 zlabel('V(x_0)');
@@ -600,24 +596,17 @@ grid on;
 sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 set(sDown,'FaceAlpha',0.3);
 set(sDown,'LineStyle','none');
+set(sDown,'FaceColor',blue);
 sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 set(sUp,'FaceAlpha',0.3);
 set(sUp,'LineStyle','none');
+set(sUp,'FaceColor',blue);
 sMid = surface(x1Mesh, x2Mesh, mPost);
 set(sMid,'FaceAlpha',0.8);
+set(sMid,'FaceColor',blue);
 sTrue = surface(x1Mesh, x2Mesh, trueValue);
 set(sTrue,'FaceAlpha',0.8);
-if useColor == 0
-	set(sDown,'FaceColor',[0.5,0.5,0.5]);
-	set(sUp,'FaceColor',[0.5,0.5,0.5]);
-	set(sMid,'FaceColor',[0.5,0.5,0.5]);
-	set(sTrue,'FaceColor',[0.8,0.8,0.8]);
-else
-	set(sDown,'FaceColor',[0,0,1]);
-	set(sUp,'FaceColor',[0,0,1]);
-	set(sMid,'FaceColor',[0,0,1]);
-	set(sTrue,'FaceColor',[0,1,0]);
-end
+set(sTrue,'FaceColor',green);
 xlabel('C_h');
 ylabel('C_\alpha');
 zlabel('V(x_0,\theta)');

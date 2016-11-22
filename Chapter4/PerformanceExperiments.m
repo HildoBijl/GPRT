@@ -19,16 +19,18 @@ if useColor == 0
 	blue = [0.2 0.2 0.2];
 	yellow = [0.4 0.4 0.4];
 	grey = [0.8 0.8 0.8];
+	colormap(repmat((0:0.01:1)',1,3));
 else
 	red = [0.8 0 0];
 	green = [0 0.4 0];
 	blue = [0 0 0.8];
 	yellow = [0.6 0.6 0];
 	grey = [0.8 0.8 1];
+	colormap('default');
 end
 
 % We define settings for the script.
-nmTotal = 1e6; % This is the number of measurements we will set up in total. We may not need all of them.
+nmTotal = 2e6; % This is the number of measurements we will set up in total. We may not need all of them.
 nmPlot = 50; % This is the number of measurements used to make the plots.
 nm = 1e4; % This is the number of measurements used by the GP regression algorithm.
 nsPerDimension = 21; % This is the number of trial points per dimension. These are also used to calculate the RMSE.
@@ -109,9 +111,13 @@ set(sUp,'FaceColor',blue);
 sMid = surface(x1Mesh, x2Mesh, mPost);
 set(sMid,'FaceAlpha',0.8);
 set(sMid,'FaceColor',blue);
-scatter3(Xm(1,1:nmPlot), Xm(2,1:nmPlot), fmh(1:nmPlot)', 'ro', 'filled');
+if useColor == 0
+	scatter3(Xm(1,1:nmPlot), Xm(2,1:nmPlot), fmh(1:nmPlot)', 'ko', 'filled');
+else
+	scatter3(Xm(1,1:nmPlot), Xm(2,1:nmPlot), fmh(1:nmPlot)', 'ro', 'filled');
+end
 sFunc = surface(x1Mesh, x2Mesh, fs);
-set(sFunc,'FaceAlpha',0.8);
+set(sFunc,'FaceAlpha',0.5);
 set(sFunc,'FaceColor',green);
 xlabel('x_1');
 ylabel('x_2');
@@ -138,9 +144,13 @@ set(sUp,'FaceColor',blue);
 sMid = surface(x1Mesh, x2Mesh, mPost - fs);
 set(sMid,'FaceAlpha',0.8);
 set(sMid,'FaceColor',blue);
-scatter3(Xm(1,1:nmPlot), Xm(2,1:nmPlot), fmh(1:nmPlot)' - fm(1:nmPlot)', 'ro', 'filled');
+if useColor == 0
+	scatter3(Xm(1,1:nmPlot), Xm(2,1:nmPlot), fmh(1:nmPlot)' - fm(1:nmPlot)', 'ko', 'filled');
+else
+	scatter3(Xm(1,1:nmPlot), Xm(2,1:nmPlot), fmh(1:nmPlot)' - fm(1:nmPlot)', 'ro', 'filled');
+end
 sFunc = surface(x1Mesh, x2Mesh, fs - fs);
-set(sFunc,'FaceAlpha',0.8);
+set(sFunc,'FaceAlpha',0.5);
 set(sFunc,'FaceColor',green);
 xlabel('x_1');
 ylabel('x_2');

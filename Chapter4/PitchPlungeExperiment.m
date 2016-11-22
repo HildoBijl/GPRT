@@ -156,20 +156,14 @@ for outputIndex = 1:2
 	sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 	set(sDown,'FaceAlpha',0.3);
 	set(sDown,'LineStyle','none');
+	set(sDown,'FaceColor',blue);
 	sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 	set(sUp,'FaceAlpha',0.3);
 	set(sUp,'LineStyle','none');
+	set(sUp,'FaceColor',blue);
 	sMid = surface(x1Mesh, x2Mesh, mPost);
 	set(sMid,'FaceAlpha',0.8);
-	if useColor == 0
-		set(sDown,'FaceColor',[0.5,0.5,0.5]);
-		set(sUp,'FaceColor',[0.5,0.5,0.5]);
-		set(sMid,'FaceColor',[0.5,0.5,0.5]);
-	else
-		set(sDown,'FaceColor',[0,0,1]);
-		set(sUp,'FaceColor',[0,0,1]);
-		set(sMid,'FaceColor',[0,0,1]);
-	end
+	set(sMid,'FaceColor',blue);
 	xlabel('h_k');
 	ylabel('\alpha_k');
 	if outputIndex == 1
@@ -190,12 +184,8 @@ for outputIndex = 1:2
 % 	load('../Chapter2/CH2Predictions'); % These are the predictions from chapter 2, with a limited number of measurements.
 	load('../Chapter4/CorrectPlot'); % These values were found by taking 10.000 experiments, which started from a stationary state and had zero input, and applying regular GP regression from it. It's the best we can do, so we assume that these are the true values.
 	sPrevious = surface(x1Mesh, x2Mesh, mPostStorage(:,:,outputIndex));
-	set(sPrevious,'FaceAlpha',0.4);
-	if useColor == 0
-		set(sPrevious,'FaceColor',[0.7,0.7,0.7]);
-	else
-		set(sPrevious,'FaceColor',[0.3,0.1,0]);
-	end
+	set(sPrevious,'FaceAlpha',0.8);
+	set(sPrevious,'FaceColor',green);
 	if exportFigs ~= 0
 		export_fig(['NextStatePredictionFiveDimensional',num2str(outputIndex),'GP.png'],'-transparent');
 	end
@@ -253,20 +243,14 @@ for outputIndex = 1:2
 	sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 	set(sDown,'FaceAlpha',0.3);
 	set(sDown,'LineStyle','none');
+	set(sDown,'FaceColor',blue);
 	sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 	set(sUp,'FaceAlpha',0.3);
 	set(sUp,'LineStyle','none');
+	set(sUp,'FaceColor',blue);
 	sMid = surface(x1Mesh, x2Mesh, mPost);
 	set(sMid,'FaceAlpha',0.8);
-	if useColor == 0
-		set(sDown,'FaceColor',[0.5,0.5,0.5]);
-		set(sUp,'FaceColor',[0.5,0.5,0.5]);
-		set(sMid,'FaceColor',[0.5,0.5,0.5]);
-	else
-		set(sDown,'FaceColor',[0,0,1]);
-		set(sUp,'FaceColor',[0,0,1]);
-		set(sMid,'FaceColor',[0,0,1]);
-	end
+	set(sMid,'FaceColor',blue);
 	xlabel('h_k');
 	ylabel('\alpha_k');
 	if outputIndex == 1
@@ -287,12 +271,8 @@ for outputIndex = 1:2
 % 	load('../Chapter2/CH2Predictions'); % These are the predictions from chapter 2, with a limited number of measurements.
 	load('../Chapter4/CorrectPlot'); % These values were found by taking 10.000 experiments, which started from a stationary state and had zero input, and applying regular GP regression from it. It's the best we can do, so we assume that these are the true values.
 	sPrevious = surface(x1Mesh, x2Mesh, mPostStorage(:,:,outputIndex));
-	set(sPrevious,'FaceAlpha',0.4);
-	if useColor == 0
-		set(sPrevious,'FaceColor',[0.7,0.7,0.7]);
-	else
-		set(sPrevious,'FaceColor',[0.3,0.1,0]);
-	end
+	set(sPrevious,'FaceAlpha',0.8);
+	set(sPrevious,'FaceColor',green);
 	if exportFigs ~= 0
 		export_fig(['NextStatePredictionFiveDimensional',num2str(outputIndex),'FITC.png'],'-transparent');
 	end
@@ -361,20 +341,14 @@ for outputIndex = 1:2
 	sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 	set(sDown,'FaceAlpha',0.3);
 	set(sDown,'LineStyle','none');
+	set(sDown,'FaceColor',blue);
 	sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 	set(sUp,'FaceAlpha',0.3);
 	set(sUp,'LineStyle','none');
+	set(sUp,'FaceColor',blue);
 	sMid = surface(x1Mesh, x2Mesh, mPost);
 	set(sMid,'FaceAlpha',0.8);
-	if useColor == 0
-		set(sDown,'FaceColor',[0.5,0.5,0.5]);
-		set(sUp,'FaceColor',[0.5,0.5,0.5]);
-		set(sMid,'FaceColor',[0.5,0.5,0.5]);
-	else
-		set(sDown,'FaceColor',[0,0,1]);
-		set(sUp,'FaceColor',[0,0,1]);
-		set(sMid,'FaceColor',[0,0,1]);
-	end
+	set(sMid,'FaceColor',blue);
 	xlabel('h_k');
 	ylabel('\alpha_k');
 	if outputIndex == 1
@@ -395,12 +369,8 @@ for outputIndex = 1:2
 % 	load('../Chapter2/CH2Predictions'); % These are the predictions from chapter 2, with a limited number of measurements.
 	load('../Chapter4/CorrectPlot'); % These values were found by taking 10.000 experiments, which started from a stationary state and had zero input, and applying regular GP regression from it. It's the best we can do, so we assume that these are the true values.
 	sPrevious = surface(x1Mesh, x2Mesh, mPostStorage(:,:,outputIndex));
-	set(sPrevious,'FaceAlpha',0.4);
-	if useColor == 0
-		set(sPrevious,'FaceColor',[0.7,0.7,0.7]);
-	else
-		set(sPrevious,'FaceColor',[0.3,0.1,0]);
-	end
+	set(sPrevious,'FaceAlpha',0.8);
+	set(sPrevious,'FaceColor',green);
 	if exportFigs ~= 0
 		export_fig(['NextStatePredictionFiveDimensional',num2str(outputIndex),'PITC',num2str(groupSize1),'.png'],'-transparent');
 	end
@@ -469,20 +439,14 @@ for outputIndex = 1:2
 	sDown = surface(x1Mesh, x2Mesh, mPost - 2*sPost);
 	set(sDown,'FaceAlpha',0.3);
 	set(sDown,'LineStyle','none');
+	set(sDown,'FaceColor',blue);
 	sUp = surface(x1Mesh, x2Mesh, mPost + 2*sPost);
 	set(sUp,'FaceAlpha',0.3);
 	set(sUp,'LineStyle','none');
+	set(sUp,'FaceColor',blue);
 	sMid = surface(x1Mesh, x2Mesh, mPost);
 	set(sMid,'FaceAlpha',0.8);
-	if useColor == 0
-		set(sDown,'FaceColor',[0.5,0.5,0.5]);
-		set(sUp,'FaceColor',[0.5,0.5,0.5]);
-		set(sMid,'FaceColor',[0.5,0.5,0.5]);
-	else
-		set(sDown,'FaceColor',[0,0,1]);
-		set(sUp,'FaceColor',[0,0,1]);
-		set(sMid,'FaceColor',[0,0,1]);
-	end
+	set(sMid,'FaceColor',blue);
 	xlabel('h_k');
 	ylabel('\alpha_k');
 	if outputIndex == 1
@@ -503,12 +467,8 @@ for outputIndex = 1:2
 % 	load('../Chapter2/CH2Predictions'); % These are the predictions from chapter 2, with a limited number of measurements.
 	load('../Chapter4/CorrectPlot'); % These values were found by taking 10.000 experiments, which started from a stationary state and had zero input, and applying regular GP regression from it. It's the best we can do, so we assume that these are the true values.
 	sPrevious = surface(x1Mesh, x2Mesh, mPostStorage(:,:,outputIndex));
-	set(sPrevious,'FaceAlpha',0.4);
-	if useColor == 0
-		set(sPrevious,'FaceColor',[0.7,0.7,0.7]);
-	else
-		set(sPrevious,'FaceColor',[0.3,0.1,0]);
-	end
+	set(sPrevious,'FaceAlpha',0.8);
+	set(sPrevious,'FaceColor',green);
 	if exportFigs ~= 0
 		export_fig(['NextStatePredictionFiveDimensional',num2str(outputIndex),'PITC',num2str(groupSize2),'.png'],'-transparent');
 	end
@@ -532,9 +492,9 @@ load('MeasurementData10k'); % This is the regular file with 10.000 measurements.
 % load('MeasurementData'); % This is the measurement file which you just generated through the first part of this script.
 
 % We define how many measurements we will use.
-numExperiments = 3*5+1; % This is the number of full experiments which we will run for each algorithm. If nmMax is set to 10.000, then every experiment on average lasts about twenty seconds. Plan accordingly.
+numExperiments = 3*5+1; % This is the number of full experiments which we will run for each algorithm. If nmMax is set to 10.000, then every experiment on average lasts about twenty to forty seconds. Plan accordingly.
 nmMin = 10; % This is the value of nm we will start with.
-nmMax = 10000; % This is the value of nm we will end with. Note that in total we only have 10.000 measurements.
+nmMax = 2000; % This is the value of nm we will end with. Note that in total we only have 10.000 measurements, so that is the maximum.
 nmExp = linspace(log10(nmMin),log10(nmMax),numExperiments); % We use a logarithmic scale for the number of measurements used.
 nmOptions = round(10.^nmExp);
 groupSize1 = 50; % This is the group size we will use for the first PITC run.
@@ -568,6 +528,7 @@ for nmIndex = 1:length(nmOptions)
 	for outputIndex = 1:2
 		% We set up covariance matrices and such.
 		K = lf(outputIndex)^2*exp(-1/2*sum(diff.^2./repmat(permute(lx(:,outputIndex).^2,[2,3,1]),[n,n,1]),3));
+		disp(['Test ',num2str(nmIndex)]);
 		KDivided = mat2cell(K,[nmGP,ns],[nmGP,ns]);
 		Kmm = KDivided{1,1};
 		Kms = KDivided{1,2};
@@ -735,7 +696,10 @@ for nmIndex = 1:length(nmOptions)
 	tPITC2(nmIndex) = toc;
 end
 
-% Finally, we plot the results of the experiments.
+save('PitchPlungeExperimentDataAll');
+save('PitchPlungeExperimentData','nmOptions','tGP','tFITC','tPITC1','tPITC2','groupSize1','groupSize2','RMSEGP','RMSEFITC','RMSEPITC1','RMSEPITC2');
+
+%% Finally, we plot the results of the experiments.
 
 % Optionally, we can load in the data of a long run of experiments. For this, we do need to call the first block of this script first, setting settings such as whether or not to export figures.
 % load('PitchPlungeExperimentData');
@@ -746,12 +710,12 @@ hold on;
 grid on;
 xlabel('Number of measurements used');
 ylabel('Runtime required');
-plot(nmOptions,tGP,'-','Color',blue);
-plot(nmOptions,tPITC2,'-','Color',red);
-plot(nmOptions,tPITC1,'-','Color',green);
-plot(nmOptions,tFITC,'-','Color',yellow);
+plot(nmOptions,tFITC,'-','Color',green);
+plot(nmOptions,tPITC1,'-','Color',yellow);
+plot(nmOptions,tPITC2,'-','Color',blue);
+plot(nmOptions,tGP,'-','Color',red);
 axis([0,max(nmOptions),0,3]);
-legend('GP',['PITC (',num2str(groupSize2),')'],['PITC (',num2str(groupSize1),')'],'FITC');
+legend('FITC',['PITC (',num2str(groupSize1),')'],['PITC (',num2str(groupSize2),')'],'GP');
 if exportFigs ~= 0
 	export_fig('RuntimeVersusNumMeasurements.png','-transparent');
 end
@@ -762,12 +726,12 @@ hold on;
 grid on;
 xlabel('Number of measurements used');
 ylabel('RMSE on output h_{k+1}');
-plot(nmOptions,RMSEGP(1,:),'-','Color',blue);
-plot(nmOptions,RMSEPITC2(1,:),'-','Color',red);
-plot(nmOptions,RMSEPITC1(1,:),'-','Color',green);
-plot(nmOptions,RMSEFITC(1,:),'-','Color',yellow);
-axis([0,max(nmOptions),0,1.2e-3]);
-legend('GP',['PITC (',num2str(groupSize2),')'],['PITC (',num2str(groupSize1),')'],'FITC');
+plot(nmOptions,RMSEFITC(1,:),'-','Color',green);
+plot(nmOptions,RMSEPITC1(1,:),'-','Color',yellow);
+plot(nmOptions,RMSEPITC2(1,:),'-','Color',blue);
+plot(nmOptions,RMSEGP(1,:),'-','Color',red);
+axis([0,max(nmOptions),0,1.0e-3]);
+legend('FITC',['PITC (',num2str(groupSize1),')'],['PITC (',num2str(groupSize2),')'],'GP');
 if exportFigs ~= 0
 	export_fig('RMSEOutput1VersusNumMeasurements.png','-transparent');
 end
@@ -778,12 +742,12 @@ hold on;
 grid on;
 xlabel('Number of measurements used');
 ylabel('RMSE on output \alpha_{k+1}');
-plot(nmOptions,RMSEGP(2,:),'-','Color',blue);
-plot(nmOptions,RMSEPITC2(2,:),'-','Color',red);
-plot(nmOptions,RMSEPITC1(2,:),'-','Color',green);
-plot(nmOptions,RMSEFITC(2,:),'-','Color',yellow);
+plot(nmOptions,RMSEFITC(2,:),'-','Color',green);
+plot(nmOptions,RMSEPITC1(2,:),'-','Color',yellow);
+plot(nmOptions,RMSEPITC2(2,:),'-','Color',blue);
+plot(nmOptions,RMSEGP(2,:),'-','Color',red);
 axis([0,max(nmOptions),0,10e-3]);
-legend('GP',['PITC (',num2str(groupSize2),')'],['PITC (',num2str(groupSize1),')'],'FITC');
+legend('FITC',['PITC (',num2str(groupSize1),')'],['PITC (',num2str(groupSize2),')'],'GP');
 if exportFigs ~= 0
 	export_fig('RMSEOutput2VersusNumMeasurements.png','-transparent');
 end
