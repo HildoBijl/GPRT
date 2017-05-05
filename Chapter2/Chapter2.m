@@ -541,8 +541,8 @@ SPost = Kss - Ksm/(Kmm + Sfm)*Kms; % This is the posterior covariance matrix.
 sPost = sqrt(diag(SPost)); % These are the posterior standard deviations.
 
 % We set up the GP plot.
-figure(6);
-clf(6);
+figure(9);
+clf(9);
 hold on;
 grid on;
 xlabel('Input');
@@ -569,13 +569,13 @@ end
 d2Kss = Kss.*(1/lx^2 - (diff(nm+1:end,nm+1:end).^2/lx^4)); % This is the derivative d^2 k(x,x') / dx dx' for the trial points.
 dKms = Kms.*diff(1:nm,nm+1:end)/lx^2; % This is the derivative dk(x,x') / dx' where the first input is the set of measurement points and the second input is the set of trial points.
 dKsm = dKms'; % This is the derivative dk(x,x') / dx where the first input is the set of trial points and the second input is the set of measurement points.
-mdPost = dKsm/(Kmm + Sfm)*(fmh - mm); % These are the posterior mean of the derivative.
+mdPost = -dKsm/(Kmm + Sfm)*(fmh - mm); % These are the posterior mean of the derivative.
 SdPost = d2Kss - dKsm/(Kmm + Sfm)*dKms; % These are the posterior covariance of the derivative.
 sdPost = sqrt(diag(SdPost)); % These are the posterior standard deviations of the derivative.
 
 % We set up the GP plot.
-figure(6);
-clf(6);
+figure(9);
+clf(9);
 hold on;
 grid on;
 xlabel('Input');
