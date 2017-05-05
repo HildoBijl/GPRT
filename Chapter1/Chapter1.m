@@ -13,7 +13,7 @@ addpath('../ExportFig'); % We add the functions for exporting figures.
 % We define data.
 lf = 1; % This is the output length scale.
 lx = 1; % This is the input length scale.
-sfh = 0.001; % This is the output noise scale.
+sfh = 0.1; % This is the output noise scale.
 xMin = 0; % This is the minimum value for x.
 xMax = 4; % This is the maximum value for x.
 nm = 4; % This is the number of measurements we will do.
