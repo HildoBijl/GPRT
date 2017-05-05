@@ -223,7 +223,7 @@ for i = nm+1:numPoints
 end
 
 % We plot the simulation data which we made.
-t = 0:simdt:(nt-1)*simdt;
+% t = 0:simdt:(nt-1)*simdt;
 figure(7);
 clf(7);
 hold on;
