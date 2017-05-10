@@ -4,7 +4,7 @@
 % We set up the workspace, ready for executing scripts.
 clear all; % Empty the workspace.
 clc; % Empty the command window.
-exportFigs = 1; % Do we export figures? 0 for no, 1 (or anything else) for yes.
+exportFigs = 0; % Do we export figures? 0 for no, 1 (or anything else) for yes.
 useColor = 1; % Should we set up plots for colored output (1) or black-and-white output (0)?
 
 % We add paths to folder which contain functions we will use.
@@ -120,9 +120,9 @@ ylabel('Output');
 title('Prediction by the best nonlinear ARX model');
 legend('Simulation results','Real results');
 % We also evaluate the simultion results.
-diff = zv.y - simResults.y;
-dataFit = 100*(1-norm(diff)/norm(zv.y-mean(zv.y)));
-RMSE = sqrt(mean(diff.^2));
+err = zv.y - simResults.y;
+dataFit = 100*(1-norm(err)/norm(zv.y-mean(zv.y)));
+RMSE = sqrt(mean(err.^2));
 disp(['The best NARX model gave a fit of ',num2str(dataFit),'%. The RMSE was ',num2str(RMSE),'.']);
 
 % Now it's time to try the SONIG algorithm. We set up the input data for the algorithm first.
@@ -152,8 +152,8 @@ lastDisplay = toc;
 disp('Starting to implement measurements into the SONIG algorithm.');
 ypo = y; % This will contain the posterior mean of y.
 upo = u; % This will contain the posterior mean of u.
-ystd = sy*ones(size(ypo)); % This will contain the poster standard deviation of y.
-ustd = su*ones(size(upo)); % This will contain the poster standard deviation of u.
+ystd = sy*ones(size(ypo)); % This will contain the posterior standard deviation of y.
+ustd = su*ones(size(upo)); % This will contain the posterior standard deviation of u.
 jointMean = [0;u(1);u(2);0;y(3)]; % This will be the joint vector of inputs and outputs which we're currently applying. It will basically "shift through time" upon each iteration. The first three entries are for inputs (being u(k-2), u(k-1), u(k)) and the other two entries are for outputs (being y(k) and y(k+1)).
 jointCov = [su^2*eye(3),zeros(3,2);zeros(2,3),sy^2*eye(2)]; % This will contain the covariance matrix of the SONIG input which we're currently applying.
 informationTimeStep = 5; % This is the time after which we give information on how far the algorithm is along.
@@ -200,12 +200,12 @@ for i = 4:size(ut,2)
 end
 
 % We evaluate the results.
-diff = zv.y - ys;
-dataFit = 100*(1-norm(diff)/norm(zv.y-mean(zv.y)));
-RMSE = sqrt(mean(diff.^2));
+err = zv.y - ys;
+dataFit = 100*(1-norm(err)/norm(zv.y-mean(zv.y)));
+RMSE = sqrt(mean(err.^2));
 disp(['The SONIG algorithm gave a fit of ',num2str(dataFit),'%. The RMSE was ',num2str(RMSE),'.']);
 
-% We plot the simulation data which we made.
+% We plot the simulation data that we made.
 figure(7);
 clf(7);
 hold on;
@@ -225,3 +225,64 @@ ylabel('Force [N]');
 if exportFigs ~= 0
 	export_fig(['FluidDamperPrediction.png'],'-transparent');
 end	
+
+%% Out of curiosity, we also apply the exact same method - training the NARX function - for regular GP and the NIGP method. First up is GP.
+
+% We set up the measurement matrix and vector.
+X = [ze.u(1:end-3)';ze.u(2:end-2)';ze.u(3:end-1)';ze.y(3:end-1)'];
+yr = [ze.y(4:end)];
+
+% We apply training of the GP.
+diff = repmat(permute(X,[3,2,1]),size(X,2),1) - repmat(permute(X,[2,3,1]),1,size(X,2)); % This is matrix containing differences between input points. We have rearranged things so that indices 1 and 2 represent the numbers of vectors, while index 3 represents the element within the vector.
+K = hyp.ly^2*exp(-1/2*sum(diff.^2./repmat(permute(hyp.lx.^2,[3,2,1]),size(X,2),size(X,2)), 3)); % This is the covariance matrix. It contains the covariances of each combination of points.
+Sfm = hyp.sy^2*eye(length(yr)); % This is the noise covariance matrix.
+beta = (K+Sfm)\yr;
+
+% We now run a simulation.
+xs = [ze.u(end-2);ze.u(end-1);ze.u(end);ze.y(end)];
+res = zeros(size(zv.y));
+for i = 1:length(zv.u)
+	Ks = hyp.ly^2*exp(-1/2*sum((repmat(xs,1,size(X,2)) - X).^2./repmat(hyp.lx.^2,1,size(X,2)),1));
+	ys = Ks*beta;
+	res(i) = ys;
+	xs = [xs(2);xs(3);zv.u(i);ys];
+end
+
+% And we analyze the data.
+err = zv.y - res;
+dataFit = 100*(1-norm(err)/norm(zv.y-mean(zv.y)));
+RMSE = sqrt(mean(err.^2));
+disp(['The GP algorithm gave a fit of ',num2str(dataFit),'%. The RMSE was ',num2str(RMSE),'.']);
+
+%% And we do the same for the NIGP method.
+
+% We set up the training. This could take a while.
+seard = log([hyp.lx;hyp.ly;hyp.sy]);
+lsipn = log(hyp.sx);
+tic;
+disp('Starting the NIGP training. (This may take five minutes or so.)');
+[model, nigp] = trainNIGP(permute(X,[2,1]),yr,-500,1,seard,lsipn); % You can put this in the evalc function to suppress output.
+
+% We extract the derived settings and perform training.
+lx = exp(model.seard(1:4,1));
+lf = exp(model.seard(5,1));
+sfm = exp(model.seard(6,1));
+sxm = exp(model.lsipn);
+K = lf^2*exp(-1/2*sum(diff.^2./repmat(permute(lx.^2,[3,2,1]),size(X,2),size(X,2)), 3)); % This is the covariance matrix. It contains the covariances of each combination of points.
+beta = (K + sfm^2*eye(size(X,2)) + diag(model.dipK))\yr;
+
+% We run the simulation.
+xs = [ze.u(end-2);ze.u(end-1);ze.u(end);ze.y(end)];
+res = zeros(size(zv.y));
+for i = 1:length(zv.u)
+	Ks = lf^2*exp(-1/2*sum((repmat(xs,1,size(X,2)) - X).^2./repmat(lx.^2,1,size(X,2)),1));
+	ys = Ks*beta;
+	res(i) = ys;
+	xs = [xs(2);xs(3);zv.u(i);ys];
+end
+
+% And we analyze the data.
+err = zv.y - res;
+dataFit = 100*(1-norm(err)/norm(zv.y-mean(zv.y)));
+RMSE = sqrt(mean(err.^2));
+disp(['The NIGP algorithm gave a fit of ',num2str(dataFit),'%. The RMSE was ',num2str(RMSE),'.']);

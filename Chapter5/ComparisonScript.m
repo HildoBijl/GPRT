@@ -2,7 +2,7 @@
 % 1. Perfect GP regression, with exact input measurements (but noisy output measurements) and exact hyperparameters. (Only 200 measurements.)
 % 2. Regular GP regression, with noisy input measurements and tuned hyperparameters. (Only 200 measurements.)
 % 3. Regular FITC, using the hyperparameters of (2). (The full 800 measurements.)
-% 4. The NIGP algorithm, which tunes the hyperparameters itself. (Only 200 measurements.)
+% 4. The NIGP algorithm, which tunes the hyperparameters itself. (Only 200 measurements. In the paper this experiment is mentioned last.)
 % 5. The SONIG algorithm, using the hyperparameters of (4). (Only 200 measurements.)
 % 6. The SONIG algorithm, using the hyperparameters of (4). (The full 800 measurements, which gives a roughly equal runtime as (4).)
 % 7. The SONIG algorithm, getting an initial estimate using a subset (100) measurement points of the NIGP algorithm. (A total of 800 measurements are used.)
@@ -11,7 +11,7 @@
 % We set up the workspace, ready for executing scripts.
 clear all; % Empty the workspace.
 clc; % Empty the command window.
-exportFigs = 1; % Do we export figures? 0 for no, 1 (or anything else) for yes.
+exportFigs = 0; % Do we export figures? 0 for no, 1 (or anything else) for yes.
 useColor = 1; % Should we set up plots for colored output (1) or black-and-white output (0)?
 
 % We add paths to folder which contain functions we will use.
@@ -318,16 +318,14 @@ end
 % Finally, we evaluate the results. For this, we get rid of the worst parts of the results of each algorithm.
 disp('We are done! Results are as follows for the various methods. (Note that the order is different from the order in the paper.)');
 disp('	MSE		Mean var.	Ratio	(The MSE and Mean var have been multiplied by 1000 for visibility.)');
-partUsed = 0.9; % Which part of the measurements do we use? (The remainder, being the worst experiments, will be thrown out.)
-resSorted = sort(res, 3, 'ascend'); % We sort all the results, so that it becomes easy to select the best 90%.
-result = mean(resSorted(:,1:2,1:partUsed*numIterations),3);
+result = mean(res(:,1:2,:),3);
 disp([result*1e3,result(:,1)./result(:,2)]); % We show the results. We multiply the errors by a thousand to make the numbers more visible in Matlab.
 
-% save('ComparisonScript400Experiments');
+% save('ComparisonScriptExperiments');
 
 %% With this script, we can plot the result of a certain sample from the script above. We can also load in earlier data.
 
-% load('ComparisonScript400Experiments');
+% load('ComparisonScriptExperiments');
 
 % We define colors.
 black = [0 0 0];
